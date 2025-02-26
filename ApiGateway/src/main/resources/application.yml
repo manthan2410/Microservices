@@ -1,0 +1,26 @@
+server:
+  port: 8087
+spring:
+  cloud:
+    gateway:
+      routes:
+        - id: userService
+          uri: lb://userService
+          predicates:
+            - Path=/users/**
+        - id: RATINGSERVICE
+          uri: lb://RATINGSERVICE
+          predicates:
+            - Path=/rating/**
+        - id: HOTELSERVICE
+          uri: lb://HOTELSERVICE
+          predicates:
+            - Path=/hotel/**,/staff/**
+# okta configuration for Api Gateway
+okta:
+  oauth2:
+    issuer: https://dev-24886256.okta.com/oauth2/default
+    audience: api://default
+    client-id: 0oaju238yadX9TH2b5d7
+    client-secret: pekUXmadevR0tuf3d6MXAQwnBtb0xkWJenm81Ejd6VVdgzX4ynW7FOogAqLazIXl
+    scopes: openid,profile,email,offline_access
