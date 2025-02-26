@@ -1,0 +1,10 @@
+server:
+  port: 8085
+
+spring:
+  cloud:
+    config:
+      server:
+        git:
+          uri: https://github.com/manthan2410/reviewSystem-configuration-microservices
+          clone-on-start: true
