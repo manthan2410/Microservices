@@ -1,0 +1,107 @@
+server:
+  port: 8081
+
+spring:
+#   to take config from config server
+  config:
+    import : configserver:http://localhost:8085
+# to active profiles like dev/prod
+#  profiles:
+#    active: dev
+
+
+
+# spring sercurity client configuration is its calling other services as a client
+  security:
+    oauth2:
+      resourceserver:
+        jwt:
+          issuer-uri: https://dev-24886256.okta.com/oauth2/default
+      client:
+        registration:
+          #          my-internal-client: any name of client we can give\
+          my-internal-client :
+            provider: okta
+            authorization-grant-type: client_credentials
+            scope: internal
+            client-id: 0oaju238yadX9TH2b5d7
+            client-secret: pekUXmadevR0tuf3d6MXAQwnBtb0xkWJenm81Ejd6VVdgzX4ynW7FOogAqLazIXl
+        provider:
+         okta:
+          issuer-uri: https://dev-24886256.okta.com/oauth2/default
+
+
+
+
+
+
+
+  data:
+    mongodb:
+      uri: mongodb://localhost:27017
+      database : reviewSystem
+
+      #all below are optional when creating service as client in higher spring versions.
+  application:
+          name : USER-SERVE
+#          all below details now we are taking from config server using config client
+#eureka:
+#    instance:
+#      ##for api gateway to take this service
+#      hostname: localhost
+#      prefer-ip-address: true
+#    client:
+#      fetch-registry: true
+#      register-with-eureka: true
+#      server-url:
+#        defaultZone: http://localhost:8761/eureka
+
+
+#Actuator configurations:
+management:
+  health:
+    circuitbreakers:
+      enabled: true
+  endpoints:
+    web:
+      exposure:
+        include: health
+
+  endpoint:
+    health:
+      show-details: always
+
+resilience4j:
+  circuitbreaker:
+    instances:
+      ratingHotelBreaker:
+        registerHealthIndicator: true
+        eventConsumerBufferSize: 10
+        failureRateThreshold: 50
+        minimumNumberOfCalls: 5
+        automaticTransitionFromOpenToHalfOpenEnabled: true
+        waitDurationInOpenState: 6s
+        permittedNumberOfCallsInHalfOpenState: 3
+        slidingWindowSize: 10
+        slidingWindowType: COUNT_BASED
+
+  retry:
+    instances:
+      ratingHotelRetry:
+           max-attempts: 3
+           wait-duration: 5s
+
+  ratelimiter:
+    instances:
+      ratingHotelLimiter:
+        limit-refresh-period: 4s
+        limit-for-period: 2
+        timeout-duration: 2s
+
+okta:
+  oauth2:
+    issuer: https://dev-24886256.okta.com/oauth2/default
+    audience: api://default
+
+
+
