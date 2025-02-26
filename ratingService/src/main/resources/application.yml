@@ -1,0 +1,23 @@
+server:
+  port: 9083
+
+spring:
+  data:
+    mongodb:
+      uri: mongodb://localhost:27017/reviewSystem
+
+eureka:
+  instance:
+    hostname: localhost
+    prefer-ip-address: true
+  client:
+    fetch-registry: true
+    register-with-eureka: true
+    server-url:
+      defaultZone: http://localhost:8761/eureka
+
+
+okta:
+  oauth2:
+    issuer: https://dev-24886256.okta.com/oauth2/default
+    audience: api://default
