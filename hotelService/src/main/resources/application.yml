@@ -1,0 +1,24 @@
+server:
+  port: 8082
+
+spring:
+  data:
+    mongodb:
+      uri: mongodb://localhost:27017
+      database: reviewSystem
+
+eureka:
+  instance:
+    ##for api gateway to take this service
+    hostname: localhost
+    prefer-ip-address: true
+  client:
+    fetch-registry: true
+    register-with-eureka: true
+    server-url:
+      defaultZone: http://localhost:8761/eureka
+
+okta:
+  oauth2:
+    issuer: https://dev-24886256.okta.com/oauth2/default
+    audience: api://default
